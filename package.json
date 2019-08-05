@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel ./src -d ./lib",
-    "test": "mocha --require babel-core/register"
+    "test": "npm run build && mocha --require babel-core/register"
   },
   "repository": {
     "type": "git",
