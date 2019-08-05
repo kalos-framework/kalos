@@ -4,7 +4,8 @@
   "description": "Minimal web server framework.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel ./src -d ./lib",
+    "test": "mocha --require babel-core/register"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,10 @@
   "bugs": {
     "url": "https://github.com/petehouston/kalos/issues"
   },
-  "homepage": "https://github.com/petehouston/kalos#readme"
+  "homepage": "https://github.com/petehouston/kalos#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "mocha": "^6.2.0"
+  }
 }
