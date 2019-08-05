@@ -1,0 +1,25 @@
+{
+  "name": "kalos",
+  "version": "0.0.1",
+  "description": "Minimal web server framework.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/petehouston/kalos.git"
+  },
+  "keywords": [
+    "javascript",
+    "nodejs",
+    "web",
+    "framework"
+  ],
+  "author": "Pete Houston <contact@petehouston.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/petehouston/kalos/issues"
+  },
+  "homepage": "https://github.com/petehouston/kalos#readme"
+}
