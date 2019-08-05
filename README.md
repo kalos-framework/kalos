@@ -22,7 +22,7 @@ npm install kalos
 
 ## Usage
 
-```
+```js
 import Kalos from 'kalos';
 
 const app = new Kalos();
