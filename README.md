@@ -5,6 +5,7 @@ A minimal web server framework based on NodeJS.
 Features include:
 
 - Routing
+- Handle requests (headers, params, ...)
 - Authentication
 - Cookie
 - Middleware (filter)
