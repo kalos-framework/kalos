@@ -24,17 +24,21 @@ npm install kalos
 ## Usage
 
 ```js
-import Server from 'kalos';
+import { Server, Router } from 'kalos';
 
-const app = new Server();
+const router = new Router();
 
-app.get('/hello', (req, res) => {
-    console.log('Hello World');
+router.get('/hello', (req, res) => {
+    res.send('Hello World');
 });
 
-app.get('/greet/{name}', (req, res) => {
-    console.log('Hello ' + req.params.name);
+router.get('/hello/:name', (req, res) => {
+    res.send('Hello ' + req.params.name);
 });
 
-app.start(); // by default, it starts on 127.0.0.1:8080
+const server = new Server();
+server.configRouter(router);
+server.start((ip, port) => {
+    console.log('Server started at: ' + ip + ':' + port);
+});
 ```
