@@ -34,3 +34,15 @@ It also works with common verbs.
 router.add('OPTIONS', '/resource', () => {});
 router.add('GET', '/resource', () => {});
 ```
+
+The final step is to bind the router to Kalos `Server` instance, which can be done by:
+
+```
+import { Server } from 'kalos';
+
+// ... create router and register routes
+
+const server = new Server();
+server.configRouter(router);
+server.start();
+```
