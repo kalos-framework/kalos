@@ -1,8 +1,7 @@
 import url from 'url';
 import { trimslashes } from "./utils";
-// import { debug } from 'debug';
 
-// const _debug = debug('kalos:router');
+const log = require('debug')('kalos:router');
 
 class Router {
     constructor() {
@@ -19,6 +18,8 @@ class Router {
             path,
             handler,
         });
+
+        log('added new route: [method=%s, path=%s]', method, path);
     }
 
     get(path, handler) {

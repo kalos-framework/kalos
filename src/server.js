@@ -1,12 +1,14 @@
 import Router from './router';
+const log = require('debug')('kalos:server');
 
-class Kalos {
+class Server {
     constructor(opts) {
         this.opts = opts || {};
         this.opts.httpVersion = this.opts.httpVersion || 'v1';
         this.opts.ip = this.opts.ip || '0.0.0.0';
         this.opts.port = this.opts.port || '8080';
 
+        log('inited options: %o', this.opts);
         this.initialize();
     }
 
@@ -25,7 +27,7 @@ class Kalos {
         this.router = router;
     }
 
-    start() {
+    start(cb) {
         if (!this.http) {
             throw new Error('Failed to init HTTP server');
         }
@@ -36,8 +38,13 @@ class Kalos {
 
         this.http.createServer((req, res) => {
             this.router.route(req, res);
-        }).listen(this.opts.port, this.opts.ip);
+        }).listen(this.opts.port, this.opts.ip, () => {
+            log('started server at %s:%s', this.opts.ip, this.opts.port);
+            if (cb && (typeof cb === 'function')) {
+                cb(this.opts.ip, this.opts.port);
+            }
+        });
     }
 }
 
-export default Kalos;
+export default Server;

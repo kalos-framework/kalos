@@ -1,8 +1,8 @@
-// var Kalos = require('../index.js');
+// var Server = require('../index.js');
 //
-// var app = new Kalos();
+// var app = new Server();
 //
-// app.hello('Kalos');
+// app.hello('Server');
 //
 // app.get('/xxx', function (req, res) {
 //    console.log('Get hooray');

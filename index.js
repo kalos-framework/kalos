@@ -1,18 +1,9 @@
-var start = require('./src/start.js');
-var methodGet = require('./src/get');
+import Router from './src/router';
+import Server from './src/server';
 
-
-function Kalos (opts) {
-    if (!(this instanceof Kalos)) {
-        return new Kalos(opts);
-    }
-}
-
-Kalos.prototype.hello = function (name) {
-    console.log('Hello: ' + name);
+const Kalos = {
+    Router,
+    Server
 };
 
-Kalos.prototype.start = start;
-Kalos.prototype.get = methodGet;
-
-module.exports = Kalos;
+export default Kalos;

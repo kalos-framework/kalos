@@ -1,7 +1,6 @@
-import Kalos from '../src/kalos';
-import Router from '../src/router';
+import Kalos from '../index';
 
-const route = new Router();
+const route = new Kalos.Router();
 
 route.get('/hello', (req, res) => {
     res.send('Hello World');
@@ -11,6 +10,8 @@ route.get('/hello/:name', (req, res) => {
     res.send('Hello ' + req.params.name);
 });
 
-const server = new Kalos();
+const server = new Kalos.Server();
 server.configRouter(route);
-server.start();
+server.start((ip, port) => {
+    console.log('Server started at: ' + ip + ':' + port);
+});

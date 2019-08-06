@@ -24,9 +24,9 @@ npm install kalos
 ## Usage
 
 ```js
-import Kalos from 'kalos';
+import Server from 'kalos';
 
-const app = new Kalos();
+const app = new Server();
 
 app.get('/hello', (req, res) => {
     console.log('Hello World');
