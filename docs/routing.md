@@ -1,5 +1,7 @@
 # module: Routing
 
+## 1. Routes
+
 All routing in Kalos are handles by `Router` object.
 
 You will need to create an instance of `Router`.
@@ -45,4 +47,18 @@ import { Server } from 'kalos';
 const server = new Server();
 server.configRouter(router);
 server.start();
+```
+
+## 2. Route Parameters
+
+All route parameters are parsed into `req.params` object.
+
+Kalos uses named routing for route parameters. So if you register route like this `/hello/:name` , this route parameter will be bound to `name`.
+
+```js
+route.get('/hello/:name', (req, res) => {
+    res.send('Hello ' + req.params.name);
+});
+
+// 127.0.0.1:8080/hello/kalos  =>  response: 'Hello kalos'
 ```
