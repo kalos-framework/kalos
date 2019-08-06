@@ -1,4 +1,6 @@
 import Router from './router';
+import MiddleWare from './middleware';
+
 const log = require('debug')('kalos:server');
 
 class Server {
@@ -10,6 +12,7 @@ class Server {
 
         log('inited options: %o', this.opts);
         this.initialize();
+        this.middleWares = [];
     }
 
     initialize() {
@@ -27,6 +30,14 @@ class Server {
         this.router = router;
     }
 
+    use(middleWare) {
+        if (!(middleWare instanceof MiddleWare)) {
+            throw new Error('Must configure an instance of MiddleWare');
+        }
+        this.middleWares.push(middleWare);
+        return this;
+    }
+
     start(cb) {
         if (!this.http) {
             throw new Error('Failed to init HTTP server');
@@ -37,6 +48,13 @@ class Server {
         }
 
         this.http.createServer((req, res) => {
+            if (this.middleWares.length !== 0) {
+                for (let i = 0; i < this.middleWares.length - 1; i++) {
+                    this.middleWares[i].setNext(this.middleWares[i + 1])
+                }
+                this.middleWares[0].execute(req);
+            }
+
             this.router.route(req, res);
         }).listen(this.opts.port, this.opts.ip, () => {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
