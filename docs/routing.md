@@ -37,7 +37,7 @@ router.add('GET', '/resource', () => {});
 
 The final step is to bind the router to Kalos `Server` instance, which can be done by:
 
-```
+```js
 import { Server } from 'kalos';
 
 // ... create router and register routes
