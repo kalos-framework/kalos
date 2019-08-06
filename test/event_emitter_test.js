@@ -1,6 +1,6 @@
 import Kalos from '../index';
 
-const emitter = new Kalos.EventEmitter();
+const emitter = Kalos.emitter;
 
 const hello = (name) => {
     console.log('hello ' + name);

@@ -5,7 +5,8 @@ import EventEmitter from './src/event_emitter'
 const Kalos = {
     Router,
     Server,
-    EventEmitter,
+    // singleton: just one global emitter is enough for whole server
+    emitter: new EventEmitter(),
 };
 
 export default Kalos;
