@@ -5,15 +5,14 @@ A minimal web server framework based on NodeJS.
 Features include:
 
 - [Routing](docs/routing.md)
-- Handle requests (headers, params, ...)
+- Middleware (filter)
 - Authentication
 - Cookie
-- Middleware (filter)
 - Static serving.
 - Views.
 - Configuration (+autoconfig)
+- Event handler (emit)
 - Validation (for form requests)
-- Logging
 
 ## Installation
 

@@ -3,9 +3,17 @@ import { trimslashes } from "./utils";
 
 const log = require('debug')('kalos:router');
 
+// TODO provide route group if possible
+
 class Router {
-    constructor() {
+    constructor(opts) {
+        this.opts = opts || {};
         this._routes = [];
+    }
+
+    _handle404(req, res) {
+        res.writeHead(404);
+        res.end('Route Not Found');
     }
 
     add(method, path, handler) {
@@ -87,9 +95,7 @@ class Router {
 
         // no matching route, dispatch 404
         if (!filteredRoutes || filteredRoutes.length < 1) {
-            res.writeHead(404);
-            res.end('Route Not Found');
-            return;
+            return this._handle404(req, res);
         }
 
         // invoke the handler
