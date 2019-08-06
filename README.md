@@ -4,7 +4,7 @@ A minimal web server framework based on NodeJS.
 
 Features include:
 
-- Routing
+- [Routing](docs/routing.md)
 - Handle requests (headers, params, ...)
 - Authentication
 - Cookie
