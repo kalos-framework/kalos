@@ -6,7 +6,7 @@ const Kalos = {
     Router,
     Server,
     // singleton: just one global emitter is enough for whole server
-    emitter: new EventEmitter(),
+    emitter: EventEmitter,
 };
 
 export default Kalos;

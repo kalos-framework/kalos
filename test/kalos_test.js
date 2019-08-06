@@ -10,6 +10,16 @@ route.get('/hello/:name', (req, res) => {
     res.send('Hello ' + req.params.name);
 });
 
+const emitter = Kalos.emitter;
+
+emitter.on('Server:init', () => {
+    console.log('Server inited');
+});
+
+emitter.on('Server:started', () => {
+    console.log('Server Started');
+});
+
 const server = new Kalos.Server();
 server.configRouter(route);
 server.start((ip, port) => {

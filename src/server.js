@@ -1,4 +1,7 @@
 import Router from './router';
+import emitter from './event_emitter';
+
+
 const log = require('debug')('kalos:server');
 
 class Server {
@@ -18,6 +21,8 @@ class Server {
         } else {
             this.http = require('http');
         }
+
+        emitter.emit('Server:init');
     }
 
     configRouter(router) {
@@ -42,6 +47,8 @@ class Server {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
             if (cb && (typeof cb === 'function')) {
                 cb(this.opts.ip, this.opts.port);
+
+                emitter.emit('Server:started');
             }
         });
     }
