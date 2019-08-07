@@ -34,7 +34,7 @@ class StaticServing {
         const sanitizePath = path.normalize(parsedUrl.pathname).replace(/^(\.\.[\/\\])+/, '');
         //let pathname = path.join(__dirname, sanitizePath);
         let pathname = path.join(".\\" + this.opts.sourceFolder, sanitizePath);
-
+        
         if (fs.existsSync(pathname)) {
             result = true;
 
