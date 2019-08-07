@@ -23,7 +23,7 @@ class Server {
             this.http = require('http');
         }
 
-        emitter.emit('Server:init');
+        emitter.emit('Server:initialize');
     }
 
     configRouter(router) {
@@ -42,7 +42,7 @@ class Server {
         return this;
     }
 
-    _handlerError(req, res, err) {
+    _handlerError(req, res) {
         res.statusCode = 500;
         res.end('Internal Server Error');
     }
@@ -62,6 +62,7 @@ class Server {
                 const errorHandler = onError || this._handlerError;
                 if (err) {
                     log('error while dispatching middleware stack: %o', err);
+                    emitter.emit('Server:start:error', err);
                     return errorHandler(err);
                 }
                 // if success, let router handles
@@ -72,7 +73,7 @@ class Server {
             const successHandler = onSuccess || (() => {});
             successHandler(this.opts.ip, this.opts.port);
 
-            emitter.emit('Server:started');
+            emitter.emit('Server:start:success');
         });
     }
 }
