@@ -2,7 +2,6 @@ import Router from './src/router';
 import Server from './src/server';
 import EventEmitter from './src/event_emitter';
 import StaticServing from './src/staticServing';
-import StaticServing from './src/staticServing';
 const Kalos = {
     Router,
     Server,

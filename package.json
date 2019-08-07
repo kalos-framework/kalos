@@ -1,38 +1,38 @@
 {
-  "name": "kalos",
-  "version": "0.0.1",
-  "description": "Minimal web server framework.",
-  "main": "index.js",
-  "scripts": {
-    "build": "babel ./src -d ./lib",
-    "test": "npm run build && mocha --require babel-core/register"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/petehouston/kalos.git"
-  },
-  "keywords": [
-    "javascript",
-    "nodejs",
-    "web",
-    "framework"
-  ],
-  "author": "Pete Houston <contact@petehouston.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/petehouston/kalos/issues"
-  },
-  "homepage": "https://github.com/petehouston/kalos#readme",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "debug": "^4.1.1",
-    "mocha": "^6.2.0"
-  },
-  "dependencies": {
-    "@babel/node": "^7.5.5",
-    "babel-preset-es2015": "^6.24.1",
-    "http2": "^3.3.7",
-    "nodemon": "^1.19.1"
-  }
+    "name": "kalos",
+    "version": "0.0.1",
+    "description": "Minimal web server framework.",
+    "main": "index.js",
+    "scripts": {
+        "build": "babel ./src -d ./lib",
+        "test": "npm run build && mocha --require babel-core/register"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/petehouston/kalos.git"
+    },
+    "keywords": [
+        "javascript",
+        "nodejs",
+        "web",
+        "framework"
+    ],
+    "author": "Pete Houston <contact@petehouston.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/petehouston/kalos/issues"
+    },
+    "homepage": "https://github.com/petehouston/kalos#readme",
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "debug": "^4.1.1",
+        "mocha": "^6.2.0",
+        "@babel/node": "^7.5.5",
+        "babel-preset-es2015": "^6.24.1",
+        "nodemon": "^1.19.1"
+    },
+    "dependencies": {
+        "http2": "^3.3.7"
+    }
 }
