@@ -1,17 +1,13 @@
 class Middleware {
-    constructor( handler) {
+    constructor(handler) {
         this.handler = handler;
         this.next = null;
     }
 
-    execute(req) {
-        this.req = this.handler(req);
-        if (this.req == null) {
-            throw new Error('Handler must return request');
-        } else {
-            this.next && this.next.execute(this.req);
+    execute(req, res) {
+        this.handler(req, res);
+        this.next && this.next.execute(req, res);
 
-        }
     }
 
     setNext(middleWare) {

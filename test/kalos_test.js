@@ -10,22 +10,21 @@ route.get('/hello/:name', (req, res) => {
     res.send('Hello ' + req.params.name);
 });
 
-var md1 = new Kalos.MiddleWare(req => {
+var md1 = new Kalos.MiddleWare((req, res) => {
     console.log("this is middle1");
     console.log(`Logged  ${req.url}  ${req.method} -- ${new Date()}`);
     req.test1 = "1";
-    return req;
 });
 
-var md2 = new Kalos.MiddleWare(req => {
+var md2 = new Kalos.MiddleWare((req, res) => {
     console.log("this is middle2");
     req.test2 = "2";
-    return req;
 });
 
-var md3 = new Kalos.MiddleWare(req => {
+var md3 = new Kalos.MiddleWare((req, res) => {
     console.log("this is middle3");
-    return req;
+    console.log("req.test1 =" + req.test1);
+    console.log("req.test2 =" + req.test2);
 });
 
 const server = new Kalos.Server();
