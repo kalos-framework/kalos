@@ -11,7 +11,7 @@ Features include:
 - Static serving.
 - Views.
 - Configuration (+autoconfig)
-- Event handler (emit)
+- [Event](docs/event_emitter.md)
 - Validation (for form requests)
 
 ## Installation
