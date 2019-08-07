@@ -1,7 +1,7 @@
 import http from 'http';
-import Kalos from "../index";
+import StaticServing from "../src/staticServing"
 
-const staticServing = new Kalos.StaticServing({sourceFolder:"samplefiles"});
+const staticServing = new StaticServing({sourceFolder:"samplefiles"});
 
 http.createServer((req, res) => {
     staticServing.serve(req, res);
