@@ -1,25 +1,36 @@
 class Middleware {
     constructor(handler) {
-        this.handler = handler;
-        this.next = null;
+        this.middlewares = [];
     }
 
-    execute(req, res) {
-        this.handler(req, res);
-        this.next && this.next.execute(req, res);
-
+    use(middleware) {
+        this.middlewares.push(middleware);
     }
 
-    setNext(middleWare) {
-        if (!(middleWare instanceof Middleware)) {
-            throw new Error('Must configure an instance of MiddleWare');
-        } else {
-            this.next = middleWare;
+    executeMiddleware(req, res, router) {
+        function iterator(index) {
+            if (index === this.middlewares.length) {
+                console.log("finish middleware, calling router....");
+                return router.route(req, res);
+            }
+            try {
+                this.middlewares[index].call(this, req, res, err => {
+                    if (err) {
+                        return console.log('There was an error: ' + err.message);
+                    }
+                    iterator.call(this, ++index);
+                });
+            } catch (e) {
+                console.log("middleware error = " + e);
+                res.statusCode = 500;
+                res.end("something wrong");
+
+            }
         }
+
+        iterator.call(this, 0);
     }
 
 }
 
 export default Middleware;
-
-

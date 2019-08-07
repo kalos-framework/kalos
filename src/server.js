@@ -15,7 +15,7 @@ class Server {
 
         log('inited options: %o', this.opts);
         this.initialize();
-        this.middleWares = [];
+        this.middleWare = new MiddleWare;
     }
 
     initialize() {
@@ -36,12 +36,10 @@ class Server {
     }
 
     use(middleWare) {
-        if (!(middleWare instanceof MiddleWare)) {
-            throw new Error('Must configure an instance of MiddleWare');
-        }
-        this.middleWares.push(middleWare);
+        this.middleWare.use(middleWare);
         return this;
     }
+
 
     start(cb) {
         if (!this.http) {
@@ -53,14 +51,9 @@ class Server {
         }
 
         this.http.createServer((req, res) => {
-            if (this.middleWares.length !== 0) {
-                for (let i = 0; i < this.middleWares.length - 1; i++) {
-                    this.middleWares[i].setNext(this.middleWares[i + 1])
-                }
-                this.middleWares[0].execute(req);
-            }
 
-            this.router.route(req, res);
+            this.middleWare.executeMiddleware(req, res, this.router);
+            // this.router.route(req, res);
         }).listen(this.opts.port, this.opts.ip, () => {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
             if (cb && (typeof cb === 'function')) {
