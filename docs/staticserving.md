@@ -2,7 +2,7 @@
 
 You might want to use Static Serving when you want to:
 
-- load files on server from a config folder and its childs.
+- Load files on server from a config folder and its childs.
 
 - By default support for the following mime types:
 ```js
