@@ -1,6 +1,8 @@
 import Router from './router';
+import StaticServing from './staticServing';
 import emitter from './event_emitter';
 import StaticServing from './staticServing';
+
 
 const log = require('debug')('kalos:server');
 
