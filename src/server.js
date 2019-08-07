@@ -1,4 +1,6 @@
 import Router from './router';
+import StaticServing from './staticServing';
+
 const log = require('debug')('kalos:server');
 
 class Server {
@@ -27,6 +29,13 @@ class Server {
         this.router = router;
     }
 
+    configStaticServing(staticServing) {
+        if (!(staticServing instanceof StaticServing)) {
+            throw new Error('Must configure an instance of StaticServing');
+        }
+        this.staticServing = staticServing;
+    }
+
     start(cb) {
         if (!this.http) {
             throw new Error('Failed to init HTTP server');
@@ -37,7 +46,9 @@ class Server {
         }
 
         this.http.createServer((req, res) => {
-            this.router.route(req, res);
+            if(this.staticServing.serve(req, res) == false){
+                this.router.route(req, res);
+            }
         }).listen(this.opts.port, this.opts.ip, () => {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
             if (cb && (typeof cb === 'function')) {
