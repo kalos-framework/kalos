@@ -1,6 +1,7 @@
 import Router from './router';
 import emitter from './event_emitter';
 import StaticServing from './staticServing';
+import Cookie from './cookie';
 
 
 const log = require('debug')('kalos:server');
@@ -39,7 +40,12 @@ class Server {
         }
         this.staticServing = staticServing;
     }
-
+    configCookie(cookie){
+        if (!(cookie instanceof Cookie)) {
+            throw new Error('Must configure an instance of Cookie');
+        }
+        this.cookie = cookie;
+    }
     start(cb) {
         if (!this.http) {
             throw new Error('Failed to init HTTP server');
@@ -50,6 +56,7 @@ class Server {
         }
 
         this.http.createServer((req, res) => {
+            this.cookie.updateCookie(req,res);
             if(this.staticServing.serve(req, res) == false){
                 this.router.route(req, res);
             }
