@@ -42,7 +42,7 @@ class Server {
         return this;
     }
 
-    _handlerError(req, res) {
+    _handleError(req, res) {
         res.statusCode = 500;
         res.end('Internal Server Error');
     }
@@ -59,7 +59,7 @@ class Server {
         this.http.createServer((req, res) => {
             this.middleWare.dispatch(req, res, (req, res, err) => {
                 // fire error
-                const errorHandler = onError || this._handlerError;
+                const errorHandler = onError || this._handleError;
                 if (err) {
                     log('error while dispatching middleware stack: %o', err);
                     emitter.emit('Server:start:error', err);
