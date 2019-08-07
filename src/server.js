@@ -1,8 +1,6 @@
 import Router from './router';
 import MiddleWare from './middleware';
-
 import emitter from './event_emitter';
-
 
 const log = require('debug')('kalos:server');
 
@@ -33,15 +31,23 @@ class Server {
             throw new Error('Must configure an instance of Router');
         }
         this.router = router;
+        return this;
     }
 
     use(middleWare) {
+        if (!(middleWare instanceof Function)) {
+            throw new Error('Middleware must be a Function');
+        }
         this.middleWare.use(middleWare);
         return this;
     }
 
+    _handlerError(req, res, err) {
+        res.statusCode = 500;
+        res.end('Internal Server Error');
+    }
 
-    start(cb) {
+    start(onSuccess, onError) {
         if (!this.http) {
             throw new Error('Failed to init HTTP server');
         }
@@ -51,16 +57,22 @@ class Server {
         }
 
         this.http.createServer((req, res) => {
-
-            this.middleWare.executeMiddleware(req, res, this.router);
-            // this.router.route(req, res);
+            this.middleWare.dispatch(req, res, (req, res, err) => {
+                // fire error
+                const errorHandler = onError || this._handlerError;
+                if (err) {
+                    log('error while dispatching middleware stack: %o', err);
+                    return errorHandler(err);
+                }
+                // if success, let router handles
+                this.router.handle(req, res);
+            });
         }).listen(this.opts.port, this.opts.ip, () => {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
-            if (cb && (typeof cb === 'function')) {
-                cb(this.opts.ip, this.opts.port);
+            const successHandler = onSuccess || (() => {});
+            successHandler(this.opts.ip, this.opts.port);
 
-                emitter.emit('Server:started');
-            }
+            emitter.emit('Server:started');
         });
     }
 }

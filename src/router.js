@@ -50,7 +50,7 @@ class Router {
         this.add('DELETE', path, handler);
     }
 
-    route(req, res) {
+    handle(req, res) {
         req = this._wrapRequest(req);
         res = this._wrapResponse(res);
 

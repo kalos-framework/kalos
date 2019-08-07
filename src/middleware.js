@@ -1,36 +1,33 @@
+const log = require('debug')('kalos:middleware');
+
 class Middleware {
-    constructor(handler) {
-        this.middlewares = [];
+    constructor() {
+        this.stack = [];
     }
 
     use(middleware) {
-        this.middlewares.push(middleware);
+        // stack order LIFO
+        this.stack.push(middleware);
     }
 
-    executeMiddleware(req, res, router) {
-        function iterator(index) {
-            if (index === this.middlewares.length) {
-                console.log("finish middleware, calling router....");
-                return router.route(req, res);
+    dispatch(req, res, done) {
+        const iterator = (index) => {
+            if (index >= this.stack.length) {
+                log("finish middleware, calling router....");
+                return done(req, res);
             }
             try {
-                this.middlewares[index].call(this, req, res, err => {
-                    if (err) {
-                        return console.log('There was an error: ' + err.message);
-                    }
+                this.stack[index].call(this, req, res, () => {
                     iterator.call(this, ++index);
                 });
             } catch (e) {
-                console.log("middleware error = " + e);
-                res.statusCode = 500;
-                res.end("something wrong");
-
+                log("middleware error: %o", e);
+                return done(req, res, e);
             }
-        }
+        };
 
         iterator.call(this, 0);
     }
-
 }
 
 export default Middleware;

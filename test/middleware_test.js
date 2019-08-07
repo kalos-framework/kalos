@@ -55,11 +55,11 @@ server.use((req, res, next) => {
 }).configRouter(route);
 
 function isNotLogin(res) {
-    return true;
+    return false;
 }
 
 function hasNotRole(res) {
-    return true;
+    return false;
 }
 server.start((ip, port) => {
     console.log('Server started at: ' + ip + ':' + port);
