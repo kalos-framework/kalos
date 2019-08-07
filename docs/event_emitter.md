@@ -1,6 +1,6 @@
 # Event Emitter
 
-You might wnat to use event emitter when you want to:
+You might want to use event emitter when you want to:
 
 - subscribe to framework event.
 - provide events and publish to other parts of the web application.
