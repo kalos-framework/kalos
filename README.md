@@ -2,7 +2,7 @@
 
 A minimal web server framework based on NodeJS.
 
-![Kalos Framework](kalos-logo.png)
+![Kalos Framework](kalos_logo.png)
 
 ## Features 
 
