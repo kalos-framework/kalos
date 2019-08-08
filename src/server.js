@@ -82,7 +82,9 @@ class Server {
                     return errorHandler(err);
                 }
                 // if success, let router handles
-                this.router.handle(req, res);
+                 if(this.staticServing.serve(req, res) == false){
+               		 this.router.route(req, res);
+            	}
             });
         }).listen(this.opts.port, this.opts.ip, () => {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
