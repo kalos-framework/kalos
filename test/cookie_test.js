@@ -1,13 +1,9 @@
-import http from 'http';
-import Kalos from "../index";
-import assert from 'assert';
+import Kalos from '../index';
 
-const cookie = new Kalos.Cookie();
+const server = new Kalos.Server();
 
-http.createServer((req, res) => {
-    cookie.updateCookie(req,res);
-    res.end("Test cookie completed");
-    assert(cookie.cookieMap != null && cookie.cookieMap.size > 0);
-}).listen(1337,() => {
-    console.log("started at port 1337");
-})
+server.configRouter(new Kalos.Router());
+
+server.start(() => {
+    console.log('server started');
+});
