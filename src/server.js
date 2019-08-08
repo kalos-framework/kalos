@@ -1,7 +1,6 @@
 import Router from './router';
 import MiddleWare from './middleware';
 import emitter from './event_emitter';
-import StaticServing from './staticServing';
 
 import mwRequestParser from './middleware/request_parser';
 import mwResponseSend  from './middleware/response_send';
@@ -44,12 +43,7 @@ class Server {
         this.router = router;
         return this;
     }
-	 configStaticServing(staticServing) {
-        if (!(staticServing instanceof StaticServing)) {
-            throw new Error('Must configure an instance of StaticServing');
-        }
-        this.staticServing = staticServing;
-    }
+
     use(m) {
         if (!(m instanceof Function)) {
             throw new Error('Middleware must be a Function');
@@ -82,9 +76,7 @@ class Server {
                     return errorHandler(err);
                 }
                 // if success, let router handles
-                 if(this.staticServing.serve(req, res) == false){
-               		 this.router.route(req, res);
-            	}
+                this.router.handle(req, res);
             });
         }).listen(this.opts.port, this.opts.ip, () => {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
