@@ -1,5 +1,6 @@
 import url from 'url';
 import { trimslashes } from "./utils";
+import emitter from './event_emitter';
 
 const log = require('debug')('kalos:router');
 
@@ -8,6 +9,7 @@ const log = require('debug')('kalos:router');
 class Router {
     constructor(opts) {
         this.opts = opts || {};
+        this.notFoundHandler = this.opts.notFoundHandler || this._handle404;
         this._routes = [];
     }
 
@@ -28,6 +30,7 @@ class Router {
         });
 
         log('added new route: [method=%s, path=%s]', method, path);
+        emitter.emit('Router::add', method, path);
     }
 
     get(path, handler) {
@@ -50,10 +53,8 @@ class Router {
         this.add('DELETE', path, handler);
     }
 
-    route(req, res) {
-        req = this._wrapRequest(req);
-        res = this._wrapResponse(res);
-
+    handle(req, res) {
+        log('handling router for %s %s', req.method, req.url);
         let path = trimslashes(url.parse(req.url).pathname);
         let method = req.method;
 
@@ -95,7 +96,8 @@ class Router {
 
         // no matching route, dispatch 404
         if (!filteredRoutes || filteredRoutes.length < 1) {
-            return this._handle404(req, res);
+            emitter.emit('Router:handle:notfound', req.method, req.url);
+            return this.notFoundHandler(req, res);
         }
 
         // invoke the handler
@@ -125,58 +127,6 @@ class Router {
 
     totalRoutes() {
         return this._routes.length;
-    }
-
-    _wrapRequest(req) {
-        req = req || {};
-
-        req.params = {};
-
-        req.query = url.parse(req.url, true).query;
-        req.queryparts = url.parse(req.url, true);
-
-        req.rawBody = ''; // body of request
-        req.on('data', c => {
-            req.rawBody += c;
-        });
-
-        return req;
-    }
-
-    _wrapResponse(res) {
-        res = res || {};
-
-        // overwrite for better usage
-        res.send = (body, contentType, statusCode) => {
-            res.charset = res.charset || 'utf-8';
-            res.statusCode = statusCode || res.statusCode || 200;
-            res.body = body;
-            res.headers = 'text/html'; // default
-
-            if (contentType) {
-                res.setHeader('Content-Type', contentType);
-            } else {
-                res.setHeader('Content-Type', 'text/html');
-            }
-
-            if (typeof body === 'string') {
-                if (!res.getHeader('Content-Type')) {
-                    res.setHeader('Content-Type', 'text/html');
-                }
-            } else {
-                body = JSON.stringify(body);
-            }
-
-            res.write(body);
-            res.end();
-        };
-
-        res.json = (body) => {
-            res.setHeader('Content-Type', 'application/json');
-            return res.send(body, 'application/json', 200);
-        };
-
-        return res;
     }
 }
 

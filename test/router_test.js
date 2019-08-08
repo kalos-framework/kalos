@@ -7,7 +7,7 @@ describe('Router', () => {
         assert(router instanceof Router);
     });
 
-    it('should register and get route handler', () => {
+    it('should register and get handle handler', () => {
         let router = new Router();
         var handler = function (req, res) {
 

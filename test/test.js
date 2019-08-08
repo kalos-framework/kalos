@@ -27,5 +27,5 @@ router.get('/hello/:name', (req, res) => {
 
 
 http.createServer((req, res) => {
-    router.route(req, res);
+    router.handle(req, res);
 }).listen(1337);
