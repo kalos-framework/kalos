@@ -46,24 +46,3 @@ export default function (options = {}) {
         }
     };
 }
-
-const serve =  function (req, res, next) {
-    // parse URL
-    const parsedUrl = url.parse(req.url);
-    // extract URL path
-    const sanitizePath = path.normalize(parsedUrl.pathname).replace(/^(\.\.[\/\\])+/, '');
-    //let pathname = path.join(__dirname, sanitizePath);
-    let pathname = path.join("." , this.opts.sourceFolder, sanitizePath);
-
-    if (fs.existsSync(pathname)) {
-        fs.readFile(pathname, function (err, data) {
-            // based on the URL path, extract the file extention. e.g. .js, .doc, ...
-            const ext = path.parse(pathname).ext;
-            // if the file is found, set Content-type and send data
-            res.setHeader('Content-type', mimeType[ext] || 'text/plain');
-            res.end(data);
-        });
-    } else {
-        next();
-    }
-};
