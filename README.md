@@ -2,14 +2,16 @@
 
 A minimal web server framework based on NodeJS.
 
-Features include:
+![Kalos Framework](kalos_logo.png)
+
+## Features 
 
 - [Routing](docs/routing.md)
 - [Middleware](docs/middleware.md)
 - Authentication
 - Cookie
-- Static serving.
-- Views.
+- [Serve static files](docs/staticserving.md)
+- [Views](docs/view.md)
 - Configuration (+autoconfig)
 - [Event](docs/event_emitter.md)
 - Validation (for form requests)
@@ -41,3 +43,7 @@ server.start((ip, port) => {
     console.log('Server started at: ' + ip + ':' + port);
 });
 ```
+
+## License
+
+MIT @ 2019.

@@ -1,10 +1,13 @@
-import http from 'http';
-import Kalos from "../index";
+import Kalos from '../index';
 
-const staticServing = new Kalos.StaticServing({sourceFolder:"samplefiles"});
+const server = new Kalos.Server();
+server.static({
+    source: require('path').resolve(__dirname)
+});
+server.configRouter(new Kalos.Router());
 
-http.createServer((req, res) => {
-    staticServing.serve(req, res);
-}).listen(1337,() => {
-    console.log("started at port 1337");
-})
+server.start(() => {
+    console.log('server started');
+});
+
+

@@ -1,10 +1,13 @@
 import Router from './router';
+import View from './view';
 import MiddleWare from './middleware';
 import emitter from './event_emitter';
 
 import mwRequestParser from './middleware/request_parser';
 import mwResponseSend  from './middleware/response_send';
 import mwResponseJson  from './middleware/response_json';
+import mwStaticServe   from './middleware/static_serve';
+import mwResponseRender from './middleware/response_render';
 
 const log = require('debug')('kalos:server');
 
@@ -16,6 +19,7 @@ class Server {
         this.opts.port = this.opts.port || '8080';
 
         this.middleWare = new MiddleWare();
+        this.viewEngine({});
 
         log('inited options: %o', this.opts);
         this.initialize();
@@ -85,6 +89,19 @@ class Server {
 
             emitter.emit('Server:start:success');
         });
+    }
+
+    static(options = {}) {
+        this.use(mwStaticServe(options));
+    }
+
+    viewEngine(options = {}) {
+        this.view = new View(options);
+        this.use(mwResponseRender({
+            engine: this.view.engine,
+            source: this.view.source,
+            ext: this.view.ext
+        }));
     }
 }
 
