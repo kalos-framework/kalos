@@ -8,7 +8,6 @@ const route = new Kalos.Router({
 });
 
 
-
 route.get('/hello', (req, res) => {
     res.send('Hello World');
 });
