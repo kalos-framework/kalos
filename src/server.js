@@ -2,6 +2,10 @@ import Router from './router';
 import MiddleWare from './middleware';
 import emitter from './event_emitter';
 
+import mwRequestParser from './middleware/request_parser';
+import mwResponseSend  from './middleware/response_send';
+import mwResponseJson  from './middleware/response_json';
+
 const log = require('debug')('kalos:server');
 
 class Server {
@@ -11,9 +15,10 @@ class Server {
         this.opts.ip = this.opts.ip || '0.0.0.0';
         this.opts.port = this.opts.port || '8080';
 
+        this.middleWare = new MiddleWare();
+
         log('inited options: %o', this.opts);
         this.initialize();
-        this.middleWare = new MiddleWare;
     }
 
     initialize() {
@@ -22,6 +27,11 @@ class Server {
         } else {
             this.http = require('http');
         }
+
+        // push default middleware
+        this.middleWare.use(mwRequestParser);
+        this.middleWare.use(mwResponseSend);
+        this.middleWare.use(mwResponseJson);
 
         emitter.emit('Server:initialize');
     }

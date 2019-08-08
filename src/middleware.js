@@ -7,10 +7,10 @@ class Middleware {
         this.stack = [];
     }
 
-    use(middleware) {
+    use(m) {
         // stack order LIFO
-        this.stack.push(middleware);
-        emitter.emit('Middleware:use', middleware);
+        this.stack.push(m);
+        emitter.emit('Middleware:use', m);
     }
 
     dispatch(req, res, done) {

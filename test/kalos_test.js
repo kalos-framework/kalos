@@ -1,6 +1,12 @@
 import Kalos from '../index';
 
-const route = new Kalos.Router();
+const route = new Kalos.Router({
+    notFoundHandler: function (req, res) {
+        res.writeHead(404);
+        res.end('Route ' + req.url + ' not found.');
+    }
+});
+
 
 route.get('/hello', (req, res) => {
     res.send('Hello World');
@@ -8,16 +14,6 @@ route.get('/hello', (req, res) => {
 
 route.get('/hello/:name', (req, res) => {
     res.send('Hello ' + req.params.name);
-});
-
-const emitter = Kalos.emitter;
-
-emitter.on('Server:init', () => {
-    console.log('Server inited');
-});
-
-emitter.on('Server:started', () => {
-    console.log('Server Started');
 });
 
 const server = new Kalos.Server();
