@@ -44,11 +44,11 @@ class Server {
         return this;
     }
 
-    use(middleWare) {
-        if (!(middleWare instanceof Function)) {
+    use(m) {
+        if (!(m instanceof Function)) {
             throw new Error('Middleware must be a Function');
         }
-        this.middleWare.use(middleWare);
+        this.middleWare.use(m);
         return this;
     }
 
