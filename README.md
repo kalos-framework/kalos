@@ -8,7 +8,7 @@ Features include:
 - [Middleware](docs/middleware.md)
 - Authentication
 - Cookie
-- Static serving.
+- [Serve static files](docs/staticserving.md)
 - Views.
 - Configuration (+autoconfig)
 - [Event](docs/event_emitter.md)
