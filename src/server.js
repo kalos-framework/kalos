@@ -2,6 +2,7 @@ import Router from './router';
 import View from './view';
 import MiddleWare from './middleware';
 import emitter from './event_emitter';
+import Cache from './cache';
 
 import mwRequestParser from './middleware/request_parser';
 import mwResponseSend  from './middleware/response_send';
@@ -47,7 +48,13 @@ class Server {
         this.router = router;
         return this;
     }
-
+    configCache(cache) {
+        if (!(cache instanceof Cache)) {
+            throw new Error('Must configure an instance of Router');
+        }
+        this.cache = cache;
+        return this;
+    }
     use(m) {
         if (!(m instanceof Function)) {
             throw new Error('Middleware must be a Function');
@@ -102,6 +109,9 @@ class Server {
             source: this.view.source,
             ext: this.view.ext
         }));
+    }
+    getCache(){
+        return this.cache;
     }
 }
 
