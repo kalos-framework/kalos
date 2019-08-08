@@ -10,6 +10,8 @@ const Kalos = {
     MiddleWare,
     // singleton: just one global emitter is enough for whole server
     emitter: EventEmitter,
+ StaticServing,
+    Cookie
 };
 
 export default Kalos;
