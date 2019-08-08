@@ -1,4 +1,3 @@
-import staticServe from '../src/middleware/static_serve';
 import Kalos from '../index';
 
 const server = new Kalos.Server();
