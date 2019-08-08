@@ -22,6 +22,9 @@ server.configRouter(route);
 const staticServing = new Kalos.StaticServing({sourceFolder:"samplefiles"});
 server.configStaticServing(staticServing);
 
+const cookie = new Kalos.Cookie();
+server.configCookie(cookie);
+
 server.start((ip, port) => {
     console.log('Server started a: ' + ip + ':' + port);
 });
