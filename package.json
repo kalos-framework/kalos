@@ -24,13 +24,17 @@
   },
   "homepage": "https://github.com/petehouston/kalos#readme",
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "debug": "^4.1.1",
     "mocha": "^6.2.0"
   },
   "dependencies": {
+
     "http2": "^3.3.7",
-    "braces": ">=2.3.1"
+    "braces": ">=2.3.1",
+    "ejs": "^2.6.2"
   }
 }

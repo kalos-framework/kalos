@@ -25,7 +25,11 @@ router.get('/hello/:name', (req, res) => {
     res.send('Hello ' + req.params.name);
 });
 
-
 http.createServer((req, res) => {
+<<<<<<< Updated upstream
     router.handle(req, res);
+=======
+    router.route(req, res);
+
+>>>>>>> Stashed changes
 }).listen(1337);

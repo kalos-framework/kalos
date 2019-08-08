@@ -2,13 +2,16 @@ import Router from './src/router';
 import Server from './src/server';
 import MiddleWare from './src/middleware';
 import EventEmitter from './src/event_emitter'
+import View from './src/view';
 
 const Kalos = {
     Router,
     Server,
     MiddleWare,
+    View,
     // singleton: just one global emitter is enough for whole server
-    emitter: EventEmitter,
-};
+    emitter: EventEmitter
+}
+
 
 export default Kalos;

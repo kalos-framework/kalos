@@ -1,4 +1,5 @@
 import Router from './router';
+<<<<<<< Updated upstream
 import MiddleWare from './middleware';
 import emitter from './event_emitter';
 
@@ -6,6 +7,9 @@ import mwRequestParser from './middleware/request_parser';
 import mwResponseSend  from './middleware/response_send';
 import mwResponseJson  from './middleware/response_json';
 
+=======
+import View from './view';
+>>>>>>> Stashed changes
 const log = require('debug')('kalos:server');
 
 class Server {
@@ -67,6 +71,7 @@ class Server {
         }
 
         this.http.createServer((req, res) => {
+<<<<<<< Updated upstream
             this.middleWare.dispatch(req, res, (req, res, err) => {
                 // fire error
                 const errorHandler = onError || this._handleError;
@@ -78,6 +83,10 @@ class Server {
                 // if success, let router handles
                 this.router.handle(req, res);
             });
+=======
+            this._wrap(res);
+            this.router.route(req, res);
+>>>>>>> Stashed changes
         }).listen(this.opts.port, this.opts.ip, () => {
             log('started server at %s:%s', this.opts.ip, this.opts.port);
             const successHandler = onSuccess || (() => {});
@@ -85,6 +94,19 @@ class Server {
 
             emitter.emit('Server:start:success');
         });
+    }
+
+    view(opts = {}) {
+        let options = opts || {};
+        this.opts.engine = opts.engine || 'ejs';
+    }
+
+    _wrap(res) {
+        res.render = function (view, data) {
+            //var opts = {defaultEngine:'ejs', dir:'views',ext:'.ejs'};
+            const engine = new View(opts);
+            engine.render(view, data);
+        };
     }
 }
 
