@@ -5,6 +5,7 @@ import emitter from './event_emitter';
 import mwRequestParser from './middleware/request_parser';
 import mwResponseSend  from './middleware/response_send';
 import mwResponseJson  from './middleware/response_json';
+import mwStaticServe   from './middleware/static_serve';
 
 const log = require('debug')('kalos:server');
 
@@ -85,6 +86,10 @@ class Server {
 
             emitter.emit('Server:start:success');
         });
+    }
+
+    static(options = {}) {
+        this.use(mwStaticServe(options));
     }
 }
 
