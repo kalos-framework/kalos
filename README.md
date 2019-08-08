@@ -9,7 +9,7 @@ Features include:
 - Authentication
 - Cookie
 - [Serve static files](docs/staticserving.md)
-- Views.
+- [Views](docs/view.md)
 - Configuration (+autoconfig)
 - [Event](docs/event_emitter.md)
 - Validation (for form requests)
