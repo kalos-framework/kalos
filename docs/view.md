@@ -2,7 +2,7 @@
 
 Kalos provides view templating out of the box by allowing to integrate with most of template engine based on NodeJS.
 
-Framework uses [ejs]() template engine by default.
+Framework uses [ejs](https://www.npmjs.com/package/ejs) template engine by default.
 
 ## View Engine
 
@@ -25,7 +25,7 @@ The options are following:
 - `ext` : the extension of the view files to render. Default to `.ejs`, since `ejs` is the default template engine.
 - `options` : options to render for view engine. Default value is `{}`, which means default value of corresponding template engine.
 
-For example, if you want to use [pug](), this is how to register:
+For example, if you want to use [pug](https://www.npmjs.com/package/pug), this is how to register:
 
 ```js
 server.viewEngine({

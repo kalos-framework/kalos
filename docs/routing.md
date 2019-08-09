@@ -62,3 +62,78 @@ route.get('/hello/:name', (req, res) => {
 
 // 127.0.0.1:8080/hello/kalos  =>  response: 'Hello kalos'
 ```
+
+Route parameters can be nested.
+
+```js
+route.get('/category/:cat_id/book/:book_id', (req, res) => {
+    console.log('Category: ' + req.params.cat_id);
+    console.log('Book: ' + req.params.book_id);
+    res.end();
+});
+```
+
+## 3. Query parameters
+
+Query parameters can be retrieved from route in a similar fashion, they are stored in `req.query` object.
+
+```js
+route.get('/filter?q=framework&sort=desc', (req, res) => {
+    console.log('Search keyword: ' + req.query.q);
+    console.log('Sort order: ' + req.query.sort);
+    res.end();
+});
+```
+
+### 4. Route middleware
+
+Similar to global app middleware that is applied for all routes, route middleware only works on specific routes that set.
+
+The syntax is not different from basic route declaration.
+
+```js
+const middleware1 = (req, res, next) => {
+    // do something
+    ...
+    
+    next();
+};
+
+const middleware2 = (req, res, next) => {
+    // do something
+    ...
+    
+    next();
+};
+
+route.get('/ROUTE', middleware1, middleware2, ..., (req, res) => {
+    // route handler
+});
+```
+
+You can put any number of middlewares as argument; however, the last one should be a route handler, which should always make response to client request.
+
+For example, if you want to provide authentication check for user, you might need to do this:
+
+```js
+const isLogin = (req, res, next) => {
+    // do some checking
+    if (loggedIn) { next(); }
+    else {
+        res.writeHead(401);
+        res.end('Not Authenticated');
+    }
+};
+
+const isUserRole = (req, res, next) => {
+    if (userData.role == 'USER') { next(); }
+    else {
+        res.writeHead(403);
+        res.end('Access Forbidden');
+    }
+};
+route.get('/user/profile', isLogin, isUserRole, (req, res) => {
+    const user = load_user_info();
+    res.render('user_profile', user);
+});
+```
