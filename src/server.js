@@ -18,6 +18,7 @@ class Server {
         this.opts.httpVersion = this.opts.httpVersion || 'v1';
         this.opts.ip = this.opts.ip || '0.0.0.0';
         this.opts.port = this.opts.port || '8080';
+        this.router = this.opts.router || new Router();
 
         this.middleWare = new MiddleWare();
         this.viewEngine({});
@@ -37,8 +38,6 @@ class Server {
         this.middleWare.use(mwRequestParser);
         this.middleWare.use(mwResponseSend);
         this.middleWare.use(mwResponseJson);
-
-        emitter.emit('Server:initialize');
     }
 
     configRouter(router) {
@@ -90,6 +89,28 @@ class Server {
 
             emitter.emit('Server:start:success');
         });
+
+        return this;
+    }
+
+    stop(cb) {
+        if (this.http) {
+            this.http.close(() => {
+                emitter.emit('Server:stop');
+                if (cb != null && (typeof cb == 'function')) {
+                    cb();
+                }
+            });
+        }
+    }
+
+    /** Proxy event emitter **/
+    on(event, handler) {
+        emitter.on(event, handler);
+    }
+
+    off(event, handler) {
+        emitter.off(event, handler);
     }
 
     auth() {
@@ -98,6 +119,7 @@ class Server {
 
     static(options = {}) {
         this.use(mwStaticServe(options));
+        emitter.emit('Server:static');
     }
 
     viewEngine(options = {}) {
@@ -107,7 +129,46 @@ class Server {
             source: this.view.source,
             ext: this.view.ext
         }));
+        emitter.emit('Server:viewEngine');
     }
+
+    /** Proxy the router methods **/
+    add(method, path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 2);
+        this.router.add(method, path, ...args);
+        return this;
+    }
+
+    get(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.get(path, ...args);
+        return this;
+    }
+
+    post(path, hamdlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.post(path, ...args);
+        return this;
+    }
+
+    put(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.put(path, ...args);
+        return this;
+    }
+
+    patch(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.patch(path, ...args);
+        return this;
+    }
+
+    delete(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.delete(path, ...args);
+        return this;
+    }
+
 }
 
 export default Server;

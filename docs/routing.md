@@ -1,4 +1,4 @@
-# module: Routing
+# Routing
 
 ## 1. Routes
 
@@ -85,7 +85,7 @@ route.get('/filter?q=framework&sort=desc', (req, res) => {
 });
 ```
 
-### 4. Route middleware
+## 4. Route middleware
 
 Similar to global app middleware that is applied for all routes, route middleware only works on specific routes that set.
 

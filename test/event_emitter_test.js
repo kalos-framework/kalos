@@ -6,14 +6,12 @@ const hello = (name) => {
     console.log('hello ' + name);
 };
 
-// test on
-emitter.on('hello', hello);
+const server = new Kalos.Server();
+emitter.on('Server:initialize', hello);
 
-emitter.emit('hello', 'pete');
-
-// test off
-emitter.off('hello', hello);
-
-emitter.emit('hello', 'pete');
+server.on('Server:start:success', () => {
+    console.log('Yeah Yeah');
+});
+server.start();
 
 
