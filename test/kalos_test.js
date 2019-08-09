@@ -1,8 +1,11 @@
 import Kalos from '../index';
+import cookieParser from 'cookie-parser';
 
 const server = new Kalos.Server();
+server.use(cookieParser());
 
 server.get('/hello', (req, res) => {
+    console.log(req.cookies);
     res.send('Hello World');
 });
 

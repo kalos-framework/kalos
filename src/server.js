@@ -37,8 +37,6 @@ class Server {
         this.middleWare.use(mwRequestParser);
         this.middleWare.use(mwResponseSend);
         this.middleWare.use(mwResponseJson);
-
-        emitter.emit('Server:initialize');
     }
 
     configRouter(router) {
@@ -96,6 +94,10 @@ class Server {
 
     on(event, handler) {
         emitter.on(event, handler);
+    }
+
+    off(event, handler) {
+        emitter.off(event, handler);
     }
 
     stop(cb) {
