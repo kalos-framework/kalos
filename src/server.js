@@ -2,6 +2,7 @@ import Router from './router';
 import View from './view';
 import MiddleWare from './middleware';
 import emitter from './event_emitter';
+import Authentication from './middleware/auth';
 
 import mwRequestParser from './middleware/request_parser';
 import mwResponseSend  from './middleware/response_send';
@@ -89,6 +90,10 @@ class Server {
 
             emitter.emit('Server:start:success');
         });
+    }
+
+    auth() {
+        return this.use(Authentication());
     }
 
     static(options = {}) {

@@ -21,7 +21,7 @@ emitter.on('Server:started', () => {
 });
 
 const server = new Kalos.Server();
-server.use((req, res, next) => {
+server.auth().use((req, res, next) => {
     console.log("this is middle1");
     req.test1 = "1";
     next();
