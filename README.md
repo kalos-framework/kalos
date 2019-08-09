@@ -8,13 +8,12 @@ A minimal web server framework based on NodeJS.
 
 - [Routing](docs/routing.md)
 - [Middleware](docs/middleware.md)
-- [Authentication](docs/authentication.md)
-- Cookie
-- [Serve static files](docs/staticserving.md)
 - [Views](docs/view.md)
-- Configuration (+autoconfig)
 - [Event](docs/event_emitter.md)
-- Validation (for form requests)
+- [Serve static files](docs/staticserving.md)
+- [Authentication](docs/authentication.md)
+- etc... and more
+
 
 ## Installation
 
