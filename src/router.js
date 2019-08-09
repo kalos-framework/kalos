@@ -130,37 +130,19 @@ class Router {
 
         // invoke the handler
         filteredRoutes.forEach(r => {
-            req.on('end', () => {
-                if (req.rawBody !== '') {
-                    // _debug('handling route: %s', req.headers['content-type']);
-                    // parse body for route
-                    let body;
-
-                    if (req.headers['content-type'] === 'application/json') {
-                        body = JSON.parse(req.rawBody);
-                    } else if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-                        body = require('querystring').parse(req.rawBody); // same as default
-                    } else {
-                        body = require('querystring').parse(req.rawBody);
-                    }
-
-                    req.body = body;
+            // fire list of route handlers
+            // last one is the real handler
+            const handlers = r.handlers.slice(0).reverse();
+            function next(err) {
+                if (err) {
+                    return this.errorHandler(req, res);
                 }
-
-                // fire list of route handlers
-                // last one is the real handler
-                const handlers = r.handlers.slice(0).reverse();
-                function next(err) {
-                    if (err) {
-                        return this.errorHandler(req, res);
-                    }
-                    const fn = handlers.pop();
-                    if (fn && (typeof fn === 'function')) {
-                        fn(req, res, next);
-                    }
+                const fn = handlers.pop();
+                if (fn && (typeof fn === 'function')) {
+                    fn(req, res, next);
                 }
-                next();
-            });
+            }
+            next();
         });
 
     }

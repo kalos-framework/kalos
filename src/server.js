@@ -3,11 +3,12 @@ import View from './view';
 import MiddleWare from './middleware';
 import emitter from './event_emitter';
 
-import mwRequestParser from './middleware/request_parser';
+import mwQueryParser from './middleware/query_parser';
 import mwResponseSend  from './middleware/response_send';
 import mwResponseJson  from './middleware/response_json';
 import mwStaticServe   from './middleware/static_serve';
 import mwResponseRender from './middleware/response_render';
+import mwResponseRedirect from './middleware/response_redirect';
 
 const log = require('debug')('kalos:server');
 
@@ -34,9 +35,10 @@ class Server {
         }
 
         // push default middleware
-        this.middleWare.use(mwRequestParser);
+        this.middleWare.use(mwQueryParser);
         this.middleWare.use(mwResponseSend);
         this.middleWare.use(mwResponseJson);
+        this.middleWare.use(mwResponseRedirect);
     }
 
     configRouter(router) {
@@ -56,7 +58,7 @@ class Server {
     }
 
     _handleError(req, res) {
-        res.statusCode = 500;
+        res.writeHead(500);
         res.end('Internal Server Error');
     }
 
