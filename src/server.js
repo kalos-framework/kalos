@@ -92,14 +92,6 @@ class Server {
         return this;
     }
 
-    on(event, handler) {
-        emitter.on(event, handler);
-    }
-
-    off(event, handler) {
-        emitter.off(event, handler);
-    }
-
     stop(cb) {
         if (this.http) {
             this.http.close(() => {
@@ -109,6 +101,15 @@ class Server {
                 }
             });
         }
+    }
+
+    /** Proxy event emitter **/
+    on(event, handler) {
+        emitter.on(event, handler);
+    }
+
+    off(event, handler) {
+        emitter.off(event, handler);
     }
 
     static(options = {}) {
