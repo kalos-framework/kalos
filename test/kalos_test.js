@@ -1,26 +1,22 @@
 import Kalos from '../index';
 
-const route = new Kalos.Router({
-    notFoundHandler: function (req, res) {
-        res.writeHead(404);
-        res.end('Route ' + req.url + ' not found.');
-    }
-});
+const server = new Kalos.Server();
 
-
-route.get('/hello', (req, res) => {
+server.get('/hello', (req, res) => {
     res.send('Hello World');
 });
 
-route.get('/hello/:name', (req, res) => {
+server.get('/hello/:name', (req, res) => {
     res.send('Hello ' + req.params.name);
 });
 
-const server = new Kalos.Server();
-server.configRouter(route);
-
-const staticServing = new Kalos.StaticServing({sourceFolder:"samplefiles"});
-server.configStaticServing(staticServing);
+server.get('/', (req, res, next) => {
+    console.log('handler 1'); next();
+}, (req, res, next) => {
+    console.log('handler 2'); next();
+}, (req, res) => {
+    res.end('DONE');
+});
 
 server.start((ip, port) => {
     console.log('Server started a: ' + ip + ':' + port);

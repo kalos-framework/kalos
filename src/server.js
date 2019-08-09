@@ -17,6 +17,7 @@ class Server {
         this.opts.httpVersion = this.opts.httpVersion || 'v1';
         this.opts.ip = this.opts.ip || '0.0.0.0';
         this.opts.port = this.opts.port || '8080';
+        this.router = this.opts.router || new Router();
 
         this.middleWare = new MiddleWare();
         this.viewEngine({});
@@ -89,10 +90,28 @@ class Server {
 
             emitter.emit('Server:start:success');
         });
+
+        return this;
+    }
+
+    on(event, handler) {
+        emitter.on(event, handler);
+    }
+
+    stop(cb) {
+        if (this.http) {
+            this.http.close(() => {
+                emitter.emit('Server:stop');
+                if (cb != null && (typeof cb == 'function')) {
+                    cb();
+                }
+            });
+        }
     }
 
     static(options = {}) {
         this.use(mwStaticServe(options));
+        emitter.emit('Server:static');
     }
 
     viewEngine(options = {}) {
@@ -102,7 +121,40 @@ class Server {
             source: this.view.source,
             ext: this.view.ext
         }));
+        emitter.emit('Server:viewEngine');
     }
+
+    /** Proxy the router methods **/
+    add(method, path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 2);
+        this.router.add(method, path, ...args);
+    }
+
+    get(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.get(path, ...args);
+    }
+
+    post(path, hamdlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.post(path, ...args);
+    }
+
+    put(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.put(path, ...args);
+    }
+
+    patch(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.patch(path, ...args);
+    }
+
+    delete(path, handlers) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.router.delete(path, ...args);
+    }
+
 }
 
 export default Server;
