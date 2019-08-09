@@ -30,10 +30,11 @@ export default function (options = {}) {
         const sanitizePath = path.normalize(parsedUrl.pathname).replace(/^(\.\.[\/\\])+/, '');
         let pathname = path.join(opts.source, sanitizePath);
 
-        if (fs.existsSync(pathname)) {
+        if (fs.existsSync(pathname) && fs.lstatSync(pathname).isFile()) {
             fs.readFile(pathname, function (err, data) {
                 if (err) {
-                    console.log('error serve: ' + err);
+                    // console.log('error serve: ' + err);
+                    next();
                 }
                 // based on the URL path, extract the file extention. e.g. .js, .doc, ...
                 const ext = path.parse(pathname).ext;

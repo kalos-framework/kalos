@@ -108,15 +108,18 @@ class Server {
     /** Proxy event emitter **/
     on(event, handler) {
         emitter.on(event, handler);
+        return this;
     }
 
     off(event, handler) {
         emitter.off(event, handler);
+        return this;
     }
 
     static(options = {}) {
         this.use(mwStaticServe(options));
         emitter.emit('Server:static');
+        return this;
     }
 
     viewEngine(options = {}) {
@@ -127,6 +130,7 @@ class Server {
             ext: this.view.ext
         }));
         emitter.emit('Server:viewEngine');
+        return this;
     }
 
     /** Proxy the router methods **/

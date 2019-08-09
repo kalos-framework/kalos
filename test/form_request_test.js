@@ -1,17 +1,26 @@
-import Kalos from "../index";
+import Kalos from '../index';
 import bodyParser from 'body-parser';
+import path from 'path';
+
+const names = ['pete', 'luan'];
 
 const server = new Kalos.Server()
     .use(bodyParser.urlencoded())
+    .static({
+        source: path.join(__dirname, 'public')
+    })
+    .viewEngine({
+        source: path.join(__dirname, 'views'),
+        ext: 'ejs'
+    })
     .get('/', (req, res) => {
-        res.end('Hello!');
+        res.view('index', { names });
     })
     .post('/', (req, res) => {
-        console.log('Query: ' + JSON.stringify(req.query));
-        console.log('Form Body: ' + JSON.stringify(req.body));
-        res.redirect(301, '/');
-        // res.writeHead(201);
-        // res.end();
+        if (req.body.name) {
+            names.push(req.body.name);
+        }
+        res.redirect(302, '/');
     })
     .start((ip, port) => {
         console.log('server started at ' + ip + ':' + port);
