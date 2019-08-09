@@ -8,6 +8,7 @@ import mwResponseSend  from './middleware/response_send';
 import mwResponseJson  from './middleware/response_json';
 import mwStaticServe   from './middleware/static_serve';
 import mwResponseRender from './middleware/response_render';
+import mwClientCache from './middleware/client_cache';
 
 const log = require('debug')('kalos:server');
 
@@ -34,6 +35,7 @@ class Server {
         }
 
         // push default middleware
+        this.middleWare.use(mwClientCache());
         this.middleWare.use(mwRequestParser);
         this.middleWare.use(mwResponseSend);
         this.middleWare.use(mwResponseJson);
