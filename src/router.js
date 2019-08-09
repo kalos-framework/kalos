@@ -7,9 +7,10 @@ const log = require('debug')('kalos:router');
 // TODO provide route group if possible
 
 class Router {
-    constructor(opts) {
+    constructor(opts = {}) {
         this.opts = opts || {};
         this.notFoundHandler = this.opts.notFoundHandler || this._handle404;
+        this.errorHandler = this.opts.errorHandler || this._handle500;
         this._routes = [];
     }
 
@@ -18,39 +19,64 @@ class Router {
         res.end('Route Not Found');
     }
 
-    add(method, path, handler) {
-        if (typeof handler !== 'function') {
-            throw new Error('Handler must be a valid function');
+    _handle500(req, res) {
+        res.writeHead(500);
+        res.end('Internal Server Error');
+    }
+
+    add(method, path, handlers) {
+        let routes = this._routes.filter(r => r.method === method && r.path === path);
+        if (routes && routes.length > 0) {
+            this._routes = this._routes.filter(r => r.method !== method || r.path !== path);
+            routes = routes[0];
+        } else {
+            routes = {
+                method,
+                path,
+                handlers: [],
+            };
         }
 
-        this._routes.push({
-            method,
-            path,
-            handler,
+        const args = Array.prototype.splice.call(arguments, 2);
+        if (args.length < 1) {
+            throw new Error('Must provide a handler for route: ' + method + ' ' + path);
+        }
+        args.forEach(h => {
+            if (typeof h !== 'function') {
+                throw new Error('Handler must be a Function');
+            }
+            routes.handlers.push(h);
         });
+
+        this._routes.push(routes);
 
         log('added new route: [method=%s, path=%s]', method, path);
         emitter.emit('Router::add', method, path);
     }
 
     get(path, handler) {
-        this.add('GET', path, handler);
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.add.call(this, 'GET', path, ...args);
     }
 
     post(path, handler) {
-        this.add('POST', path, handler);
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.add.call(this, 'POST', path, ...args);
     }
 
     put(path, handler) {
-        this.add('PUT', path, handler);
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.add.call(this, 'PUT', path, ...args);
     }
 
     patch(path, handler) {
-        this.add('PATCH', path, handler)
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.add.call(this, 'PATCH', path, ...args);
     }
 
     delete(path, handler) {
-        this.add('DELETE', path, handler);
+        const args = Array.prototype.slice.call(arguments, 1);
+        this.add.call(this, 'DELETE', path, ...args);
     }
 
     handle(req, res) {
@@ -100,6 +126,8 @@ class Router {
             return this.notFoundHandler(req, res);
         }
 
+        log('filteredRoutes: %o', filteredRoutes);
+
         // invoke the handler
         filteredRoutes.forEach(r => {
             req.on('end', () => {
@@ -119,7 +147,19 @@ class Router {
                     req.body = body;
                 }
 
-                r.handler(req, res);
+                // fire list of route handlers
+                // last one is the real handler
+                const handlers = r.handlers.slice(0).reverse();
+                function next(err) {
+                    if (err) {
+                        return this.errorHandler(req, res);
+                    }
+                    const fn = handlers.pop();
+                    if (fn && (typeof fn === 'function')) {
+                        fn(req, res, next);
+                    }
+                }
+                next();
             });
         });
 
