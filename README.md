@@ -8,7 +8,7 @@ A minimal web server framework based on NodeJS.
 
 - [Routing](docs/routing.md)
 - [Middleware](docs/middleware.md)
-- Authentication
+- [Authentication](docs/authentication.md)
 - Cookie
 - [Serve static files](docs/staticserving.md)
 - [Views](docs/view.md)
