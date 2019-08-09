@@ -1,26 +1,18 @@
 import Kalos from '../index';
 import cookieParser from 'cookie-parser';
 
-const server = new Kalos.Server();
-server.use(cookieParser());
-
-server.get('/hello', (req, res) => {
-    console.log(req.cookies);
-    res.send('Hello World');
-});
-
-server.get('/hello/:name', (req, res) => {
-    res.send('Hello ' + req.params.name);
-});
-
-server.get('/', (req, res, next) => {
-    console.log('handler 1'); next();
-}, (req, res, next) => {
-    console.log('handler 2'); next();
-}, (req, res) => {
-    res.end('DONE');
-});
-
-server.start((ip, port) => {
-    console.log('Server started a: ' + ip + ':' + port);
-});
+const server = new Kalos.Server()
+    .use(cookieParser())
+    .get('/', (req, res) => {
+        res.end('Home');
+    })
+    .get('/hello/:name', (req, res) => {
+        res.end('Hello ' + req.params.name);
+    })
+    .get('/cookies', (req, res) => {
+        console.log(req.cookies);
+        res.end('Cookie');
+    })
+    .start((ip, port) => {
+        console.log('Server started a: ' + ip + ':' + port);
+    });
