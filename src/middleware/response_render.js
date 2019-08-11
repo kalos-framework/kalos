@@ -18,13 +18,15 @@ export default function (config = {}) {
             let opts = !!options ? Object.assign({}, options) : {};
             const viewpath = path.join(config.source, view + '.' + config.ext);
 
-            config.engine.renderFile(viewpath, data, opts)
-                .then(d => res.end(d))
-                .catch(e => {
-                    // console.log(e);
-                    done(e);
-                })
-            ;
+            let res = config.engine.renderFile(viewpath, data, opts);
+
+            if (res instanceof Promise) {
+                res.then(d => res.end(d))
+                    .catch(e => {
+                        done(e);
+                    });
+            }
+            return res;
         };
 
         next();
