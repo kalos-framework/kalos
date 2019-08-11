@@ -1,0 +1,13 @@
+<table>
+    <% for(var i=0; i < names.length; i++) { %>
+        <tr>
+            <td><%= names[i] %></td>
+        </tr>
+    <% } %>
+</table>
+
+<form action="/" method="post">
+    <input type="text" name="name" />
+
+    <input type="submit">Add</form>
+</form>

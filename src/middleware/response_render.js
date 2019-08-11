@@ -14,14 +14,19 @@ export default function (config = {}) {
             return config.engine.render(template, data, opts);
         };
 
-        res.view = (view, data, options, done) => {
+        res.view = (view, data, options, done = () => {}) => {
             let opts = !!options ? Object.assign({}, options) : {};
             const viewpath = path.join(config.source, view + '.' + config.ext);
 
-            config.engine.renderFile(viewpath, data, opts)
-                .then(d => res.end(d))
-                .catch(e => done(e))
-            ;
+            let res = config.engine.renderFile(viewpath, data, opts);
+
+            if (res instanceof Promise) {
+                res.then(d => res.end(d))
+                    .catch(e => {
+                        done(e);
+                    });
+            }
+            return res;
         };
 
         next();

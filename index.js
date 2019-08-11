@@ -7,7 +7,7 @@ import Cache from './src/cache';
 const Kalos = {
     Router,
     Server,
-    MiddleWare,
+    // MiddleWare,
     // singleton: just one global emitter is enough for whole server
     emitter: EventEmitter,
     Cache,

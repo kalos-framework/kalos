@@ -2,12 +2,13 @@
 
 Middleware is a way to extend and provide cross-cutting concerns for the web applications.
 
-- Parsing the body of the request
-- Compressing/decompressing requests and responses
-- Producing access logs
-- Managing sessions
-- Managing encrypted cookies
-- Providing Cross-site Request Forgery (CSRF) protection
+- Parsing the body of the request.
+- Compressing/decompressing requests and responses.
+- Producing access logs.
+- Managing sessions.
+- Managing encrypted cookies.
+- Providing Cross-site Request Forgery (CSRF) protection.
+- etc...
 
 ## Structure
 
